@@ -110,15 +110,17 @@ function UserMovies() {
           <Alert severity="success">{message}</Alert>
         </Snackbar>
       )}
-      <div className="movie-list">
-        {sortedList.map((movie) => (
-          <MyCard
-            key={movie._id}
-            movie={movie}
-            deleteMovie={deleteMovie}
-            endpoint="/movies"
-          />
-        ))}
+      <div className="movie-list-container">
+        <div className="movie-list">
+          {sortedList.map((movie) => (
+            <MyCard
+              key={movie._id}
+              movie={movie}
+              deleteMovie={deleteMovie}
+              endpoint="/movies"
+            />
+          ))}
+        </div>
       </div>
     </>
   );

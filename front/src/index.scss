@@ -155,9 +155,8 @@ a {
   gap: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 20px;
-  width: 85%;
   & .fade-in {
     flex-basis: 15%;
   }
