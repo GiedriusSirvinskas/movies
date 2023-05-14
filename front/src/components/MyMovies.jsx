@@ -179,8 +179,9 @@ function MyMovies() {
           <Alert severity="success">Pridėjai filmą į savo sąrašą!</Alert>
         </Snackbar>
       )}
-
-      <div className="movie-list">{listJSX}</div>
+      <div className="movie-list-container">
+        <div className="movie-list">{listJSX}</div>
+      </div>
     </div>
   );
 }

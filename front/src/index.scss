@@ -147,12 +147,31 @@ a {
 }
 
 .movie-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
-  grid-gap: 20px;
-  justify-items: center;
-  align-items: center;
+  // display: grid;
+  // grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
+  // grid-gap: 20px;
+  // justify-items: center;
+  // align-items: center;
+  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   padding: 20px;
+  width: 85%;
+  & .fade-in {
+    flex-basis: 15%;
+  }
+}
+
+@media screen and (max-width: "768px") {
+  .movie-list {
+    justify-content: center;
+  }
+}
+
+.movie-list-container {
+  display: flex;
+  justify-content: center;
 }
 
 #basic-button {
