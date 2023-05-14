@@ -177,7 +177,10 @@ body {
 
 .search-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  flex-wrap: wrap;
 }
 
 .header-text {
@@ -186,6 +189,7 @@ body {
   padding: 10px;
   text-align: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 html {
@@ -269,4 +273,5 @@ html {
   & h3 {
     font-size: 2rem;
   }
+  text-align: center;
 }

@@ -57,12 +57,12 @@ function LoginPage() {
         <button type="submit" className="">
           Prisijungti
         </button>
-        <p>
-          Neturi paskyros? Tada greit{" "}
-          <Link to="/register" className="">
-            užsiregistruojam!
-          </Link>
-        </p>
+        <p>Neturi paskyros?</p>
+        <p>Tada greit</p>
+
+        <span>
+          <Link to="/register">užsiregistruojam!</Link>
+        </span>
       </form>
 
       <div className="error">{error}</div>

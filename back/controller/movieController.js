@@ -2,7 +2,10 @@ const Movie = require("./../model/movieModel");
 
 exports.getList = (req, res) => {
   try {
-    const query = { userID: { $exists: false } };
+    let query = { userID: { $exists: false } };
+    if (req.query.searchQuery) {
+      query.name = { $regex: req.query.searchQuery, $options: "i" };
+    }
     Movie.find(query)
       .then((doc) => {
         res.status(200).json(doc);
@@ -40,17 +43,16 @@ exports.postMovie = (req, res) => {
       userID: req.userID,
     });
 
-    Movie.findOne({ name: name, userID: req.userID })
-      .then((doc) => {
-        if (doc) {
-          res.status(409).json({ error: "Šį filmą jau išsisaugojai!" });
-        } else {
-          // Movie does not exist, save it to user's list
-          movie.save().then((doc) => {
-            res.status(200).json(doc);
-          });
-        }
-      })
+    Movie.findOne({ name: name, userID: req.userID }).then((doc) => {
+      if (doc) {
+        res.status(409).json({ error: "Šį filmą jau išsisaugojai!" });
+      } else {
+        // Movie does not exist, save it to user's list
+        movie.save().then((doc) => {
+          res.status(200).json(doc);
+        });
+      }
+    });
   } catch (error) {
     res.status(404).json(error);
   }

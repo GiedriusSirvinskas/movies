@@ -5,13 +5,15 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { CardActions } from "@mui/material";
+import { CardActions, Input } from "@mui/material";
 import { Button } from "@mui/material";
 import { BsPlusSquare } from "react-icons/bs";
 import Tooltip from "@mui/material/Tooltip";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 import MyCard from "./MyCard";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
 
 function MyMovies() {
   const [movieList, setMovieList] = useState([]);
@@ -21,31 +23,45 @@ function MyMovies() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [movies, setMovies] = useState([]);
+  const [sortModel, setSortModel] = useState("");
 
   const handleSnackbarOpen = (message) => {
     setSnackbarMessage(message);
   };
 
-  async function fetchFilteredData() {
-    const response = await axios.get(movieURL, {
+  async function fetchMoviesBySearchQuery(searchQuery) {
+    const response = await axios.get(listURL, {
       params: {
         searchQuery: searchQuery,
       },
     });
-    setMovies(response.data);
+    setMovieList(response.data);
   }
 
   useEffect(() => {
-    fetchData();
+    async function fetchAllMovies() {
+      const query = { userID: { $exists: false } };
+      const config = { params: { q: JSON.stringify(query) } };
+      try {
+        const response = await axios.get(listURL, config);
+        setMovieList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAllMovies();
   }, []);
 
   useEffect(() => {
-    fetchFilteredData();
+    fetchMoviesBySearchQuery(searchQuery);
   }, [searchQuery]);
 
   function handleSearch(event) {
     setSearchQuery(event.target.value);
+  }
+
+  function handleSortChange(e) {
+    setSortModel(e.target.value);
   }
 
   async function fetchData() {
@@ -77,7 +93,21 @@ function MyMovies() {
       });
   }
 
-  let listJSX = movieList.map((movie) => {
+  let sortedList = [...movieList];
+  if (sortModel === "nameDesc") {
+    sortedList.sort((a, b) => a.name.localeCompare(b.name));
+  }
+  if (sortModel === "nameAsc") {
+    sortedList.sort((a, b) => b.name.localeCompare(a.name));
+  } else if (sortModel === "yearAsc") {
+    sortedList.sort((a, b) => a.year - b.year);
+  } else if (sortModel === "yearDesc") {
+    sortedList.sort((a, b) => b.year - a.year);
+  } else if (sortModel === "category") {
+    sortedList.sort((a, b) => a.category.localeCompare(b.category));
+  }
+
+  let listJSX = sortedList.map((movie) => {
     return (
       <MyCard
         key={movie._id}
@@ -101,6 +131,35 @@ function MyMovies() {
           placeholder="Pavadinimas"
           className="search-input"
         />
+        <Box sx={{ minWidth: 200, paddingTop: "5px" }}>
+          <FormControl fullWidth>
+            <InputLabel>Rikiuoti pagal</InputLabel>
+            <Select
+              value={sortModel}
+              onChange={handleSortChange}
+              label="Rikiuoti pagal"
+            >
+              <MenuItem value="nameAsc">
+                <span>Pavadinimą</span>
+                <BiUpArrowAlt size={20} />
+              </MenuItem>
+              <MenuItem value="nameDesc">
+                <span>Pavadinimą</span>
+                <BiDownArrowAlt size={20} />
+              </MenuItem>
+              <MenuItem value="yearAsc">
+                <span>Metus</span>
+                <BiUpArrowAlt size={20} />
+              </MenuItem>
+              <MenuItem value="yearDesc">
+                <span>Metus</span>
+                <BiDownArrowAlt size={20} />
+              </MenuItem>
+              <MenuItem value="category">Kategoriją</MenuItem>
+              <MenuItem value="">Nerikiuoti</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </div>
       {error && (
         <Snackbar
