@@ -182,9 +182,10 @@ body {
 
 .header-text {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   padding: 10px;
   text-align: center;
+  align-items: center;
 }
 
 html {
@@ -205,6 +206,7 @@ html {
 .jello-horizontal {
   -webkit-animation: jello-horizontal 0.9s both;
   animation: jello-horizontal 0.9s both;
+  cursor: pointer;
 }
 
 .gradient-background {
@@ -244,7 +246,7 @@ html {
     padding: 10px;
     cursor: pointer;
     box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
-    font-family: "Comfortaa", cursive
+    font-family: "Comfortaa", cursive;
   }
   & a {
     text-decoration: none;

@@ -20,10 +20,33 @@ function MyMovies() {
   const [error, setError] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [movies, setMovies] = useState([]);
 
   const handleSnackbarOpen = (message) => {
     setSnackbarMessage(message);
   };
+
+  async function fetchFilteredData() {
+    const response = await axios.get(movieURL, {
+      params: {
+        searchQuery: searchQuery,
+      },
+    });
+    setMovies(response.data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchFilteredData();
+  }, [searchQuery]);
+
+  function handleSearch(event) {
+    setSearchQuery(event.target.value);
+  }
 
   async function fetchData() {
     const query = { userID: { $exists: false } };
@@ -33,10 +56,6 @@ function MyMovies() {
       .then((res) => setMovieList(res.data))
       .catch((error) => console.log(error));
   }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   async function postMovie(movie) {
     const movieObject = {
@@ -75,6 +94,13 @@ function MyMovies() {
         <p>
           Paspausk pliusiuką ir prisidėk filmą prie savo to-watch sąrašo! Yeeee!
         </p>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearch}
+          placeholder="Pavadinimas"
+          className="search-input"
+        />
       </div>
       {error && (
         <Snackbar

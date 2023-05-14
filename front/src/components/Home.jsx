@@ -16,7 +16,7 @@ function Home() {
         </div>
       ) : (
         <div className="home-card">
-          <p>Prisijungei?</p>
+          <p>Pagaliau pavyko?</p>
           <p>
             Tada <Link to="/list">važiuojam!</Link>
           </p>

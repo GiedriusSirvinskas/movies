@@ -5,12 +5,18 @@ import { AuthContext } from "./../../context/AuthContext";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 
 function RegisterForm() {
   const registerURL = "http://localhost:3000/users/signup";
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { loggedIn, getLoggedIn } = useContext(AuthContext);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const navigate = useNavigate();
 
@@ -57,15 +63,28 @@ function RegisterForm() {
           onBlur={formik.handleBlur}
           value={formik.values.email}
         />
-        <input
-          type="password"
-          className=""
-          placeholder="Slaptažodis"
-          name="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
+        <span style={{ position: "relative" }}>
+          <input
+            type={showPassword ? "text" : "password"}
+            className=""
+            placeholder="Slaptažodis"
+            name="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
+          <span
+            onClick={togglePasswordVisibility}
+            style={{
+              cursor: "pointer",
+              position: "absolute",
+              right: "10px",
+              top: "11.5px",
+            }}
+          >
+            {showPassword ? <RiEyeOffFill /> : <RiEyeFill />}
+          </span>
+        </span>
         <button type="submit" className="">
           Užsiregistruoti
         </button>
