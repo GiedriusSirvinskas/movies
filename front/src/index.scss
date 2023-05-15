@@ -147,11 +147,6 @@ a {
 }
 
 .movie-list {
-  // display: grid;
-  // grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
-  // grid-gap: 20px;
-  // justify-items: center;
-  // align-items: center;
   gap: 20px;
   display: flex;
   flex-wrap: wrap;
